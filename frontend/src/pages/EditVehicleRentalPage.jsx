@@ -42,7 +42,9 @@ const EditVehicleRentalPage = () => {
         setDailyPrice(data.dailyPrice);
         setAvailabilityStatus(data.availabilityStatus);
         // "2026-12-31T00:00:00.000Z" -> "2026-12-31" (the format <input type="date"> needs)
-        setBookingDeadline(data.bookingDeadline ? data.bookingDeadline.slice(0, 10) : "");
+        setBookingDeadline(
+          data.bookingDeadline ? data.bookingDeadline.slice(0, 10) : "",
+        );
         setInsurancePolicy(data.insurancePolicy);
       } catch (err) {
         setError(err.message);
@@ -97,7 +99,12 @@ const EditVehicleRentalPage = () => {
       {error && <div className="error">{error}</div>}
       <form onSubmit={submitForm}>
         <label>Vehicle Model:</label>
-        <input type="text" required value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
+        <input
+          type="text"
+          required
+          value={vehicleModel}
+          onChange={(e) => setVehicleModel(e.target.value)}
+        />
         <label>Category:</label>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="Economy">Economy</option>
@@ -107,29 +114,77 @@ const EditVehicleRentalPage = () => {
           <option value="Truck">Truck</option>
         </select>
         <label>Description:</label>
-        <textarea required value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+        <textarea
+          required
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
         <label>Agency Name:</label>
-        <input type="text" required value={agencyName} onChange={(e) => setAgencyName(e.target.value)} />
+        <input
+          type="text"
+          required
+          value={agencyName}
+          onChange={(e) => setAgencyName(e.target.value)}
+        />
         <label>Agency Email:</label>
-        <input type="email" required value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
+        <input
+          type="email"
+          required
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
+        />
         <label>Fleet Size:</label>
-        <input type="number" min="0" value={fleetSize} onChange={(e) => setFleetSize(e.target.value)} />
+        <input
+          type="number"
+          min="0"
+          value={fleetSize}
+          onChange={(e) => setFleetSize(e.target.value)}
+        />
         <label>City:</label>
-        <input type="text" required value={city} onChange={(e) => setCity(e.target.value)} />
+        <input
+          type="text"
+          required
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
         <label>State:</label>
-        <input type="text" required value={state} onChange={(e) => setState(e.target.value)} />
+        <input
+          type="text"
+          required
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
         <label>Daily Price:</label>
-        <input type="number" step="0.01" min="0" required value={dailyPrice} onChange={(e) => setDailyPrice(e.target.value)} />
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          required
+          value={dailyPrice}
+          onChange={(e) => setDailyPrice(e.target.value)}
+        />
         <label>Availability Status:</label>
-        <select value={availabilityStatus} onChange={(e) => setAvailabilityStatus(e.target.value)}>
+        <select
+          value={availabilityStatus}
+          onChange={(e) => setAvailabilityStatus(e.target.value)}
+        >
           <option value="available">Available</option>
           <option value="rented">Rented</option>
           <option value="maintenance">Maintenance</option>
         </select>
         <label>Booking Deadline:</label>
-        <input type="date" value={bookingDeadline} onChange={(e) => setBookingDeadline(e.target.value)} />
+        <input
+          type="date"
+          value={bookingDeadline}
+          onChange={(e) => setBookingDeadline(e.target.value)}
+        />
         <label>Insurance Policy:</label>
-        <input type="text" required value={insurancePolicy} onChange={(e) => setInsurancePolicy(e.target.value)} />
+        <input
+          type="text"
+          required
+          value={insurancePolicy}
+          onChange={(e) => setInsurancePolicy(e.target.value)}
+        />
         <button>Update Vehicle Rental</button>
       </form>
     </div>

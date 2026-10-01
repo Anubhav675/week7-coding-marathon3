@@ -25,3 +25,10 @@
 .create input, .create textarea, .create select { width: 100%; padding: 6px 10px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; display: block; }
 .create button { background: #f1356d; color: #fff; border: 0; padding: 8px; border-radius: 8px; cursor: pointer; }
 
+
+.navbar a h1 { margin: 0; }
+.rental-preview h3 { margin: 16px 0 6px; color: #333; }
+.actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn { background: #f1356d; color: #fff; border: 0; padding: 8px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 1em; }
+.btn-danger { background: #555; }
+.error { color: #b00020; background: #fde7ec; padding: 10px; border-radius: 6px; margin-bottom: 16px; }
