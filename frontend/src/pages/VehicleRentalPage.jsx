@@ -1,4 +1,54 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+
 const VehicleRentalPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [vehicleRental, setVehicleRental] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchVehicleRental = async () => {
+      try {
+        const res = await fetch(`/api/vehicleRentals/${id}`);
+        if (!res.ok) {
+          throw new Error("Vehicle rental not found");
+        }
+        const data = await res.json();
+        setVehicleRental(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVehicleRental();
+  }, [id]);
+
+  const deleteVehicleRental = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this rental?",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`/api/vehicleRentals/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete vehicle rental");
+      }
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
+
   return (
     <div className="rental-preview">
       <h2>{vehicleRental.vehicleModel}</h2>
