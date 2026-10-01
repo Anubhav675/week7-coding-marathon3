@@ -1,7 +1,43 @@
+import { useState } from "react";
+
 const AddVehicleRentalPage = () => {
+  const [vehicleModel, setvehicleModel] = useState("");
+  const [category, setcategory] = useState("");
+  const [description, setdescription] = useState("");
+  const [vehicleName, setvehicleName] = useState("");
+  const [contactEmail, setcontactEmail] = useState("");
+  const [fleetSize, setfleetSize] = useState("");
+  const [city, setcity] = useState("");
+  const [state, setstate] = useState("");
+  const [dailyPrice, setdailyPrice] = useState("");
+  const [listingDate, setlistingDate] = useState("");
+  const [availabilityStatus, setavailabilityStatus] = useState("");
+  const [bookingDeadline, setbookingDeadline] = useState("");
+  const [insurancePolicy, setinsurancePolicy] = useState("");
   const submitForm = (e) => {
     e.preventDefault();
     console.log("Form submitted");
+    const newVehicle = {
+      vehicleModel,
+      category,
+      description,
+      agency: {
+        name: vehicleName,
+        contactEmail,
+        fleetSize,
+      },
+      location: {
+        city,
+        state,
+      },
+      dailyPrice,
+      listingDate,
+      availabilityStatus,
+      bookingDeadline,
+      insurancePolicy,
+    };
+    AddVehicleRentalPage(newVehicle);
+    navigate("/");
   };
 
   return (
@@ -9,7 +45,10 @@ const AddVehicleRentalPage = () => {
       <h2>Add a New Vehicle Rental</h2>
       <form onSubmit={submitForm}>
         <label>Vehicle Model:</label>
-        <input type="text" required />
+        <input type="text"
+          value={vehicleModel}
+          onChange={(e) => setvehicleModel(e.target.value)}
+          required />
         <label>Category:</label>
         <select>
           <option value="Economy">Economy</option>
@@ -21,9 +60,9 @@ const AddVehicleRentalPage = () => {
         <label>Description:</label>
         <textarea required></textarea>
         <label>Agency Name:</label>
-        <input type="text" required />
+        <input type="text" value = {vehicleName} onChange={(e) => setvehicleName(e.target.value)}required />
         <label>Agency Email:</label>
-        <input type="email" required />
+        <input type="email"  required />
         <label>Fleet Size:</label>
         <input type="number" min="0" />
         <label>City:</label>
