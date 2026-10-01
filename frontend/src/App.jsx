@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // pages & components
 import Home from "./pages/HomePage";
@@ -33,7 +33,7 @@ const App = () => {
               element={<AddVehicleRentalPage />}
             />
 
-            <Route
+            {/* <Route
               path="/login"
               element={
                 <Login
@@ -49,8 +49,27 @@ const App = () => {
                   setIsAuthenticated={setIsAuthenticated}
                 />
               }
+            /> */}
+             <Route
+              path="/login"
+              element={
+                !isAuthenticated ? (
+                  <Login setIsAuthenticated={setIsAuthenticated} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
-            
+            <Route
+              path="/signup"
+              element={
+                !isAuthenticated ? (
+                  <Signup setIsAuthenticated={setIsAuthenticated} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
 
             <Route
               path="/vehicle-rentals/:id"
