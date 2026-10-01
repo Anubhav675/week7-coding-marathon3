@@ -4,6 +4,10 @@ import { useParams, useNavigate } from "react-router-dom";
 const EditVehicleRentalPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // Get the token we saved when logging in
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,7 +83,10 @@ const EditVehicleRentalPage = () => {
     try {
       const res = await fetch(`/api/vehicleRentals/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(updatedVehicleRental),
       });
       if (!res.ok) {

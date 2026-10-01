@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddVehicleRentalPage = () => {
-  // One piece of state for every input in the form
+
   const [vehicleModel, setVehicleModel] = useState("");
   const [category, setCategory] = useState("Economy");
   const [description, setDescription] = useState("");
@@ -18,11 +18,14 @@ const AddVehicleRentalPage = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  // Get the token we saved when logging in
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
 
   const submitForm = async (e) => {
     e.preventDefault(); // stop the browser from reloading the page
 
-    // Build an object with the SAME shape as the Mongoose model
     const newVehicleRental = {
       vehicleModel,
       category,
@@ -42,7 +45,10 @@ const AddVehicleRentalPage = () => {
     try {
       const res = await fetch("/api/vehicleRentals", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(newVehicleRental),
       });
       if (!res.ok) {
