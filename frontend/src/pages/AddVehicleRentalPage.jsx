@@ -155,6 +155,7 @@ const AddVehicleRentalPage = () => {
           onChange={(e) => setInsurancePolicy(e.target.value)}
         />
         <button>Add Vehicle Rental</button>
+        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );
