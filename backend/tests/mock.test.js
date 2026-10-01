@@ -16,9 +16,9 @@ const initialVehicle = [
     },
     location: { city: "New York", state: "NY" },
     dailyPrice: 45,
-    listingDate: new Date(),
+    listingDate: "2024-10-15",
     availabilityStatus: "available",
-    bookingDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    bookingDeadline: "2024-12-31",
     insurancePolicy: "Standard Coverage",
   },
 
@@ -33,9 +33,9 @@ const initialVehicle = [
     },
     location: { city: "Los Angeles", state: "CA" },
     dailyPrice: 60,
-    listingDate: new Date(),
+    listingDate: "2024-10-20",
     availabilityStatus: "available",
-    bookingDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    bookingDeadline: "2024-12-31",
     insurancePolicy: "Standard Coverage"
   }
 ]
@@ -48,16 +48,15 @@ beforeEach(async () => {
   await Vehicle.deleteMany({});
   let vehicleObject = new Vehicle(initialVehicle[0]);
   await vehicleObject.save();
-  vehicleObject = new Vehicle(initialVehicle[1]);
-  await vehicleObject.save();
+  // vehicleObject = new Vehicle(initialVehicle[1]);
+  // await vehicleObject.save();
 });
 
-describe("when there are initially some vehicles saved", () => {
-  it.only("should return all vehicles in JSON format", async () => {
-    const response = await api
-      .get("/api/vehicles")
+describe("when there is initially some vehicles saved", () => {
+ it("should return all vehicles in JSON format", async () => {
+    await api
+      .get("/api/vehicleRentals")
       .expect(200)
       .expect("Content-Type", /application\/json/);
-  });
+  })
 })
-

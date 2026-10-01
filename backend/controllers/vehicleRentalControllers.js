@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const getAllVehicleRentals = async (req, res) => {
   try{
     const vehiclerentals = await VehicleRental.find({}).sort({createdAt:-1});
-    res.status(200).json(products);
+    res.status(200).json(vehiclerentals);
   }catch (error){
     res.status(500).json({error:error.message});
   }
