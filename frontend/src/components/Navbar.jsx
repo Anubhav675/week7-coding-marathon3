@@ -23,7 +23,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
             <button onClick={handleLogout}>Logout</button>
           </>
         )}
-
+        {!isAuthenticated && <Link to="/signup">Sign Up</Link>}
         {!isAuthenticated && <Link to="/login">Login</Link>}
       </div>
     </nav>
