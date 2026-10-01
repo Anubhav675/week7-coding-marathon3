@@ -9,6 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
+app.use(express.static(path.join(__dirname, 'view')));
 
 // Routes
 app.use('/api/vehicleRentals', vehicleRentalRouter);
@@ -16,6 +17,8 @@ app.use(express.static('view'));
 // Error handling
 app.use(unknownEndpoint);
 app.use(errorHandler);
+
+
 app.use((req, res) => {
   res.sendFile(__dirname + '/view/index.html');
 });
