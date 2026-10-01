@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 
 // GET /api/vehicleRentals
 const getAllVehicleRentals = async (req, res) => {
-  res.send("getAllVehicleRentals");
+  try{
+    const vehiclerentals = await VehicleRental.find({}).sort({createdAt:-1});
+    res.status(200).json(products);
+  }catch (error){
+    res.status(500).json({error:error.message});
+  }
 };
 
 // POST /api/vehicleRentals
@@ -13,7 +18,22 @@ const createVehicleRental = async (req, res) => {
 
 // GET /api/vehicleRentals/:vehicleRentalId
 const getVehicleRentalById = async (req, res) => {
-  res.send("getVehicleRentalById");
+  const{vehiclerentalId} = req.params;
+  if(!mongoose.Types.ObjectId.isValid(vehiclerentalId)){
+    return res.status(404).json({error: 'Invalid vehicle ID'});
+
+  }
+  try{
+    const vehiclerental = await VehicleRental.findById(vehiclerentalId);
+    if(!product){
+      return res.status(404).json({error: 'Vehicle not found'});
+
+    }
+    res.status(200).json(vehiclerental);
+
+  }catch(error){
+    res.status(500).json({error: error.message});
+  }
 };
 
 // PUT /api/vehicleRentals/:vehicleRentalId
