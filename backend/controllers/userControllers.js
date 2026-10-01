@@ -3,74 +3,87 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const generateToken = (_id) => {
-    return jwt.sign({_id}, process.env.SECRET, {
-       expiresIn: "3d", 
-    });
+  return jwt.sign({ _id }, process.env.SECRET, {
+    expiresIn: "3d",
+  });
 };
 
-const signupUser = async(req, res) => {
-    const {
+const signupUser = async (req, res) => {
+  const {
+    name,
+    username,
+    password,
+    phone_number,
+    licenseNumber,
+    date_of_birth,
+    address,
+    licenseExpiryDate,
+    city,
+    yearOfExperience,
+  } = req.body;
+  try {
+    if (
+      !name ||
+      !username ||
+      !password ||
+      !phone_number ||
+      !licenseNumber ||
+      !date_of_birth ||
+      !address ||
+      !licenseExpiryDate ||
+      !city ||
+      !yearOfExperience
+    ) {
+      console.log(
         name,
         username,
         password,
         phone_number,
         licenseNumber,
         date_of_birth,
+        address,
+        licenseExpiryDate,
+        city,
+        yearOfExperience,
+      );
+      res.status(400);
+      throw new Error("Please add all fields");
+    }
+    const userExists = await User.findOne({ username });
+    if (userExists) {
+      res.status(400);
+      throw new Error("User already exists");
+    }
 
-        address:{
-            licenseExpiryDate,
-            city,
-            yearOfExperience
-        }} = req.body;
-        try {
-            if (
-            !name ||
-            !username ||
-            !password ||
-            !phone_number ||
-            !licenseNumber ||
-            !date_of_birth ||
-            !licenseExpiryDate ||
-            !city ||
-            !yearOfExperience 
-            ){
-                res.status(400);
-                throw new Error("Please add all fields");
-            }
-            const userExists = await User.findOne({username});
-            if (userExists) {
-                res.status(400);
-                throw new Error("User already exists");
-            }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-        
-        const user = await User.create({
-            name,
-            username,
-            password:hashedPassword,
-            phone_number,
-            licenseNumber,
-            date_of_birth,
-            address:{
-                licenseExpiryDate,
-                city,
-                yearOfExperience
-        }});
-        if (user) {
-          const token = generateToken(user._id);
-          res.status(201).json({ email, token });
-        } else {
-          res.status(400);
-          throw new Error("Invalid user data");
-        }
-        } catch (error) {
-          res.status(400).json({ error: error.message });
+    const user = await User.create({
+      name,
+      username,
+      password: hashedPassword,
+      phone_number,
+      licenseNumber,
+      date_of_birth,
+      address,
+      licenseExpiryDate,
+      city,
+      yearOfExperience,
+    });
+    if (user) {
+      const token = await generateToken(user._id);
+      console.log(token)
+      return res.status(201).json({ username, token });
+    } else {
+      res.status(400);
+      throw new Error("Invalid user data");
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-    };
+};
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
 
