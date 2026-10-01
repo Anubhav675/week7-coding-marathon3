@@ -6,7 +6,7 @@
 |---|---|
 | Code quality and organization | 29 / 30 |
 | Completion of assigned features | 30 / 30 |
-| **Total** | **60 / 60** |
+| **Total** | **59 / 60** |
 
 ## Code quality and organization – 29 / 30
 My components are small, use clear names, and follow the same pattern (state for each input, `try/catch` around `fetch`, loading and error messages).
