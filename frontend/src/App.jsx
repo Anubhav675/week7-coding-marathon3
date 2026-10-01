@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/HomePage";
 import AddVehicleRentalPage from "./pages/AddVehicleRentalPage";
 import Login from "./pages/Login";
+import Signup from "./pages/SignupPage"
 import VehicleRentalPage from "./pages/VehicleRentalPage";
 import EditVehicleRentalPage from "./pages/EditVehicleRentalPage";
 import Navbar from "./components/Navbar";
@@ -40,6 +41,16 @@ const App = () => {
                 />
               }
             />
+            
+            <Route
+              path="/signup"
+              element={
+                <Signup
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              }
+            />
+            
 
             <Route
               path="/vehicle-rentals/:id"
