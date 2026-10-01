@@ -5,7 +5,7 @@ const AddVehicleRentalPage = () => {
   const navigate = useNavigate();
 
   const [vehicleModel, setVehicleModel] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Economy");
   const [description, setDescription] = useState("");
   const [agencyName, setAgencyName] = useState("");
   const [agencyEmail, setAgencyEmail] = useState("");
@@ -13,7 +13,8 @@ const AddVehicleRentalPage = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [dailyPrice, setDailyPrice] = useState("");
-  const [availabilityStatus, setAvailabilityStatus] = useState("available");
+  const [availabilityStatus, setAvailabilityStatus] =
+    useState("available");
   const [bookingDeadline, setBookingDeadline] = useState("");
   const [insurancePolicy, setInsurancePolicy] = useState("");
   const [error, setError] = useState(null);
@@ -22,19 +23,23 @@ const AddVehicleRentalPage = () => {
     e.preventDefault();
 
     setError(null);
+
     const newVehicleRental = {
       vehicleModel,
       category,
       description,
+
       agency: {
         name: agencyName,
-        email: agencyEmail,
+        contactEmail: agencyEmail,
         fleetSize: Number(fleetSize),
       },
+
       location: {
         city,
         state,
       },
+
       dailyPrice: Number(dailyPrice),
       availabilityStatus,
       bookingDeadline,
@@ -49,9 +54,11 @@ const AddVehicleRentalPage = () => {
         },
         body: JSON.stringify(newVehicleRental),
       });
+
       if (!response.ok) {
         throw new Error("Failed to create new vehicle rental");
       }
+
       navigate("/");
     } catch (error) {
       setError(error.message);
@@ -61,6 +68,7 @@ const AddVehicleRentalPage = () => {
   return (
     <div className="create">
       <h2>Add a New Vehicle Rental</h2>
+
       <form onSubmit={submitForm}>
         <label>Vehicle Model:</label>
         <input
@@ -69,6 +77,7 @@ const AddVehicleRentalPage = () => {
           value={vehicleModel}
           onChange={(e) => setVehicleModel(e.target.value)}
         />
+
         <label>Category:</label>
         <select
           value={category}
@@ -81,12 +90,14 @@ const AddVehicleRentalPage = () => {
           <option value="Van">Van</option>
           <option value="Truck">Truck</option>
         </select>
+
         <label>Description:</label>
         <textarea
           required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
         <label>Agency Name:</label>
         <input
           type="text"
@@ -94,6 +105,7 @@ const AddVehicleRentalPage = () => {
           value={agencyName}
           onChange={(e) => setAgencyName(e.target.value)}
         />
+
         <label>Agency Email:</label>
         <input
           type="email"
@@ -101,6 +113,7 @@ const AddVehicleRentalPage = () => {
           value={agencyEmail}
           onChange={(e) => setAgencyEmail(e.target.value)}
         />
+
         <label>Fleet Size:</label>
         <input
           type="number"
@@ -108,6 +121,7 @@ const AddVehicleRentalPage = () => {
           value={fleetSize}
           onChange={(e) => setFleetSize(e.target.value)}
         />
+
         <label>City:</label>
         <input
           type="text"
@@ -115,6 +129,7 @@ const AddVehicleRentalPage = () => {
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
+
         <label>State:</label>
         <input
           type="text"
@@ -122,6 +137,7 @@ const AddVehicleRentalPage = () => {
           value={state}
           onChange={(e) => setState(e.target.value)}
         />
+
         <label>Daily Price:</label>
         <input
           type="number"
@@ -131,6 +147,7 @@ const AddVehicleRentalPage = () => {
           value={dailyPrice}
           onChange={(e) => setDailyPrice(e.target.value)}
         />
+
         <label>Availability Status:</label>
         <select
           value={availabilityStatus}
@@ -140,13 +157,14 @@ const AddVehicleRentalPage = () => {
           <option value="rented">Rented</option>
           <option value="maintenance">Maintenance</option>
         </select>
+
         <label>Booking Deadline:</label>
         <input
           type="date"
-          required
           value={bookingDeadline}
           onChange={(e) => setBookingDeadline(e.target.value)}
         />
+
         <label>Insurance Policy:</label>
         <input
           type="text"
@@ -154,7 +172,9 @@ const AddVehicleRentalPage = () => {
           value={insurancePolicy}
           onChange={(e) => setInsurancePolicy(e.target.value)}
         />
+
         <button>Add Vehicle Rental</button>
+
         {error && <p className="error">{error}</p>}
       </form>
     </div>

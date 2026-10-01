@@ -3,27 +3,86 @@ const mongoose = require('mongoose');
 
 // GET /api/vehicleRentals
 const getAllVehicleRentals = async (req, res) => {
-  res.send("getAllVehicleRentals");
+  try{
+    const vehiclerentals = await VehicleRental.find({}).sort({createdAt:-1});
+    res.status(200).json(vehiclerentals);
+  }catch (error){
+    res.status(500).json({error:error.message});
+  }
 };
 
 // POST /api/vehicleRentals
 const createVehicleRental = async (req, res) => {
-  res.send("createVehicleRental");
+  const { vehicleModel, category, description, agency, location, dailyPrice, listingDate, availabilityStatus, bookingDeadline, insurancePolicy } = req.body;
+  if (!vehicleModel || !category || !description || !agency || !location || !dailyPrice || !insurancePolicy) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+  try {
+    const newVehicle = await VehicleRental.create({ vehicleModel, category, description, agency, location, dailyPrice, listingDate, availabilityStatus, bookingDeadline, insurancePolicy });
+    if (newVehicle) {
+      return res.status(201).json(newVehicle);
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error creating vehicle rental", error: err.message });
+  }
 };
 
 // GET /api/vehicleRentals/:vehicleRentalId
 const getVehicleRentalById = async (req, res) => {
-  res.send("getVehicleRentalById");
+  const{vehiclerentalId} = req.params;
+  if(!mongoose.Types.ObjectId.isValid(vehiclerentalId)){
+    return res.status(404).json({error: 'Invalid vehicle ID'});
+
+  }
+  try{
+    const vehiclerental = await VehicleRental.findById(vehiclerentalId);
+    if(!product){
+      return res.status(404).json({error: 'Vehicle not found'});
+
+    }
+    res.status(200).json(vehiclerental);
+
+  }catch(error){
+    res.status(500).json({error: error.message});
+  }
 };
 
 // PUT /api/vehicleRentals/:vehicleRentalId
 const updateVehicleRental = async (req, res) => {
-  res.send("updateVehicleRental");
-};
+  const { vehicleRentalId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(vehicleRentalId)) {
+    return res.status(400).json({ message: "Invalid vehicle rental ID" });
+  }
+  const updatedData = req.body;
+  try {
+    const updatedVehicle = await VehicleRental.findOneAndUpdate({ _id: vehicleRentalId }, updatedData, { returnDocument: 'after' });
+    if (!updatedVehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    } else {
+      return res.status(200).json(updatedVehicle);
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating vehicle", error: error.message });
+  }
+}
+
 
 // DELETE /api/vehicleRentals/:vehicleRentalId
 const deleteVehicleRental = async (req, res) => {
-  res.send("deleteVehicleRental");
+  const { vehicleRentalId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(vehicleRentalId)) {
+    return res.status(400).json({ error: 'Invalid vehicle rental ID' });
+  }
+  try {
+    const deletedVehicle = await VehicleRental.findOneAndDelete({ _id: vehicleRentalId });
+    if (!deletedVehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    } else {
+      return res.status(200).json({ message: "Vehicle deleted successfully" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error deleting vehicle", error: err.message });
+  }
 };
 
 module.exports = {
