@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // pages & components
 import Home from "./pages/HomePage";
 import AddVehicleRentalPage from "./pages/AddVehicleRentalPage";
+import VehicleRentalPage from "./pages/VehicleRentalPage";
 import EditVehicleRentalPage from "./pages/EditVehicleRentalPage";
-import VehicleRentalsPage from "./pages/VehicleRentalsPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
 
@@ -18,10 +18,13 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/add-rental" element={<AddVehicleRentalPage />} />
             <Route
+              path="/vehicle-rentals/:id"
+              element={<VehicleRentalPage />}
+            />
+            <Route
               path="/edit-rental/:id"
               element={<EditVehicleRentalPage />}
             />
-            <Route path="/rentals" element={<VehicleRentalsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>

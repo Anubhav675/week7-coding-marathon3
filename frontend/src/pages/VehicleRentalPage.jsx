@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 const VehicleRentalPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // the :id part of the URL
   const navigate = useNavigate();
   const [vehicleRental, setVehicleRental] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

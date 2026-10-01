@@ -1,6 +1,5 @@
-import Navbar from "../components/Navbar";
-import VehicleRentalListings from "../components/VehicleRentalListings";
 import { useEffect, useState } from "react";
+import VehicleRentalListings from "../components/VehicleRentalListings";
 
 const Home = () => {
   const [vehicleRentals, setVehicleRentals] = useState([]);
@@ -12,7 +11,7 @@ const Home = () => {
       try {
         const res = await fetch("/api/vehicleRentals");
         if (!res.ok) {
-          throw new Error("Bro!!!! I cannot fetch vehicle rentals");
+          throw new Error("Could not fetch vehicle rentals");
         }
         const data = await res.json();
         setVehicleRentals(data);
@@ -24,18 +23,18 @@ const Home = () => {
     };
 
     fetchVehicleRentals();
-  });
+  }, []);
 
   return (
     <div className="home">
       {error && <div className="error">{error}</div>}
       {isLoading && <div>Loading...</div>}
       {!isLoading && !error && vehicleRentals.length === 0 && (
-        <p>
-          No shhhhhiiiii there isnot vehicle cuhh, add the first one homeiii
-        </p>
+        <p>No vehicle rentals yet. Add the first one!</p>
       )}
-      <VehicleRentalListings />
+      {vehicleRentals.length > 0 && (
+        <VehicleRentalListings vehicleRentals={vehicleRentals} />
+      )}
     </div>
   );
 };
