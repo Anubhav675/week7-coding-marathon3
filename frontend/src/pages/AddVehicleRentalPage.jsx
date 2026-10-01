@@ -1,91 +1,184 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddVehicleRentalPage = () => {
-  const [vehicleModel, setvehicleModel] = useState("");
-  const [category, setcategory] = useState("");
-  const [description, setdescription] = useState("");
-  const [vehicleName, setvehicleName] = useState("");
-  const [contactEmail, setcontactEmail] = useState("");
-  const [fleetSize, setfleetSize] = useState("");
-  const [city, setcity] = useState("");
-  const [state, setstate] = useState("");
-  const [dailyPrice, setdailyPrice] = useState("");
-  const [listingDate, setlistingDate] = useState("");
-  const [availabilityStatus, setavailabilityStatus] = useState("");
-  const [bookingDeadline, setbookingDeadline] = useState("");
-  const [insurancePolicy, setinsurancePolicy] = useState("");
-  const submitForm = (e) => {
+  const navigate = useNavigate();
+
+  const [vehicleModel, setVehicleModel] = useState("");
+  const [category, setCategory] = useState("Economy");
+  const [description, setDescription] = useState("");
+  const [agencyName, setAgencyName] = useState("");
+  const [agencyEmail, setAgencyEmail] = useState("");
+  const [fleetSize, setFleetSize] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [dailyPrice, setDailyPrice] = useState("");
+  const [availabilityStatus, setAvailabilityStatus] =
+    useState("available");
+  const [bookingDeadline, setBookingDeadline] = useState("");
+  const [insurancePolicy, setInsurancePolicy] = useState("");
+  const [error, setError] = useState(null);
+
+  const submitForm = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
-    const newVehicle = {
+
+    setError(null);
+
+    const newVehicleRental = {
       vehicleModel,
       category,
       description,
+
       agency: {
-        name: vehicleName,
-        contactEmail,
-        fleetSize,
+        name: agencyName,
+        contactEmail: agencyEmail,
+        fleetSize: Number(fleetSize),
       },
+
       location: {
         city,
         state,
       },
-      dailyPrice,
-      listingDate,
+
+      dailyPrice: Number(dailyPrice),
       availabilityStatus,
       bookingDeadline,
       insurancePolicy,
     };
-    AddVehicleRentalPage(newVehicle);
-    navigate("/");
+
+    try {
+      const response = await fetch("/api/vehicleRentals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newVehicleRental),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create new vehicle rental");
+      }
+
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
     <div className="create">
       <h2>Add a New Vehicle Rental</h2>
+
       <form onSubmit={submitForm}>
         <label>Vehicle Model:</label>
-        <input type="text"
+        <input
+          type="text"
+          required
           value={vehicleModel}
-          onChange={(e) => setvehicleModel(e.target.value)}
-          required />
+          onChange={(e) => setVehicleModel(e.target.value)}
+        />
+
         <label>Category:</label>
-        <select>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
           <option value="Economy">Economy</option>
           <option value="Luxury">Luxury</option>
           <option value="SUV">SUV</option>
           <option value="Van">Van</option>
           <option value="Truck">Truck</option>
         </select>
+
         <label>Description:</label>
-        <textarea required></textarea>
+        <textarea
+          required
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
         <label>Agency Name:</label>
-        <input type="text" value = {vehicleName} onChange={(e) => setvehicleName(e.target.value)}required />
+        <input
+          type="text"
+          required
+          value={agencyName}
+          onChange={(e) => setAgencyName(e.target.value)}
+        />
+
         <label>Agency Email:</label>
-        <input type="email"  required />
+        <input
+          type="email"
+          required
+          value={agencyEmail}
+          onChange={(e) => setAgencyEmail(e.target.value)}
+        />
+
         <label>Fleet Size:</label>
-        <input type="number" min="0" />
+        <input
+          type="number"
+          min="0"
+          value={fleetSize}
+          onChange={(e) => setFleetSize(e.target.value)}
+        />
+
         <label>City:</label>
-        <input type="text" required />
+        <input
+          type="text"
+          required
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+
         <label>State:</label>
-        <input type="text" required />
+        <input
+          type="text"
+          required
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+
         <label>Daily Price:</label>
-        <input type="number" step="0.01" min="0" required />
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          required
+          value={dailyPrice}
+          onChange={(e) => setDailyPrice(e.target.value)}
+        />
+
         <label>Availability Status:</label>
-        <select>
+        <select
+          value={availabilityStatus}
+          onChange={(e) => setAvailabilityStatus(e.target.value)}
+        >
           <option value="available">Available</option>
           <option value="rented">Rented</option>
           <option value="maintenance">Maintenance</option>
         </select>
+
         <label>Booking Deadline:</label>
-        <input type="date" />
+        <input
+          type="date"
+          value={bookingDeadline}
+          onChange={(e) => setBookingDeadline(e.target.value)}
+        />
+
         <label>Insurance Policy:</label>
-        <input type="text" required />
+        <input
+          type="text"
+          required
+          value={insurancePolicy}
+          onChange={(e) => setInsurancePolicy(e.target.value)}
+        />
+
         <button>Add Vehicle Rental</button>
+
+        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );
 };
 
 export default AddVehicleRentalPage;
-
